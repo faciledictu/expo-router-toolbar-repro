@@ -10,8 +10,9 @@ items. The navigation controller's toolbar stays shown for every screen that
 comes after it in the stack, and for the screen you go back to.
 
 On iOS 18 this is an empty bar with its background at the bottom of every such
-screen, and their bottom safe area keeps the toolbar's height. On iOS 27.2
-nothing shows: UIKit takes a toolbar without items out of the view hierarchy.
+screen, and their bottom safe area keeps the toolbar's height. On iOS 26 and
+27.2 nothing shows: UIKit takes a toolbar without items out of the view
+hierarchy.
 
 ## Run
 
@@ -63,6 +64,18 @@ iPhone 16 simulator, iOS 18.0:
 With the fix the empty bar still shows while the push or pop runs and slides
 away when it ends: the host leaves the window at the end of the transition
 (`evidence/ios18.0-after-push-C-10fps.png`, frames 100 ms apart).
+
+iPhone 17 simulator, iOS 26.0:
+
+| Step          | Before the fix            | After the fix              |
+| ------------- | ------------------------- | -------------------------- |
+| 1. A          | No toolbar, 34            | No toolbar, 34             |
+| 2. B          | Toolbar with the star, 76 | Toolbar with the star, 76  |
+| 3. C (from B) | Nothing drawn, 34         | No toolbar, 34             |
+| 4. B (back)   | not recorded              | Toolbar with the star, 76  |
+| 5. A (back)   | Nothing drawn, 34         | No toolbar, 34             |
+| 6. D (from B) | not run                   | Toolbar with the heart, 76 |
+| 7. B (back)   | not run                   | Toolbar with the star, 76  |
 
 iPhone 17 simulator, iOS 27.2:
 
