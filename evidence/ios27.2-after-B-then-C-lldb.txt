@@ -1,0 +1,18 @@
+iPhone 17 simulator, iOS 27.2, expo-router 58.0.29 (unpatched), development build.
+Steps: fresh launch, A -> push B -> push C. Then attached lldb.
+
+_printHierarchy:
+  RNSNavigationController
+    RNSScreen (A) disappeared, not in the window
+    RNSScreen (B) disappeared, not in the window
+    RNSScreen (C) appeared
+
+[navigationController isToolbarHidden]          -> NO
+[navigationController toolbar]                  -> <UIToolbar ...> frame (0 0; 402 874)
+[[navigationController toolbar] superview]      -> nil
+[[topViewController toolbarItems]]              -> nil
+[[topViewController view] safeAreaInsets]       -> {116, 0, 34, 0}
+
+The navigation controller keeps the toolbar shown (isToolbarHidden = NO) after B,
+but on iOS 27.2 UIKit takes the empty UIToolbar out of the view hierarchy and the
+screen's bottom safe area stays 34. Nothing is drawn.
