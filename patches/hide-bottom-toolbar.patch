@@ -1,18 +1,17 @@
 diff --git a/ios/Toolbar/RouterToolbarHostView.swift b/ios/Toolbar/RouterToolbarHostView.swift
-index b10810d420..d666dc0124 100644
+index b10810d420..3a9717510f 100644
 --- a/ios/Toolbar/RouterToolbarHostView.swift
 +++ b/ios/Toolbar/RouterToolbarHostView.swift
-@@ -5,6 +5,9 @@ import UIKit
+@@ -5,6 +5,8 @@ import UIKit
  class RouterToolbarHostView: RouterViewWithLogger, LinkPreviewMenuUpdatable {
    // Cached reference to the view controller to avoid responder chain traversal
    private weak var cachedController: RNSScreen?
-+  // The navigation controller whose toolbar this host fills. A popped screen
-+  // no longer has a navigationController when its view leaves the window.
++  // A popped screen has no navigationController by the time it leaves the window
 +  private weak var cachedNavigationController: UINavigationController?
  
    // Mutable map of toolbar items
    var toolbarItemsArray: [String] = []
-@@ -113,6 +116,7 @@ class RouterToolbarHostView: RouterViewWithLogger, LinkPreviewMenuUpdatable {
+@@ -113,6 +115,7 @@ class RouterToolbarHostView: RouterViewWithLogger, LinkPreviewMenuUpdatable {
          }
  
          controller.setToolbarItems(items, animated: true)
@@ -20,7 +19,7 @@ index b10810d420..d666dc0124 100644
          controller.navigationController?.setToolbarHidden(
            false,
            animated: true
-@@ -175,13 +179,27 @@ class RouterToolbarHostView: RouterViewWithLogger, LinkPreviewMenuUpdatable {
+@@ -175,13 +178,25 @@ class RouterToolbarHostView: RouterViewWithLogger, LinkPreviewMenuUpdatable {
        if let controller = cachedController {
          controller.setToolbarItems(nil, animated: true)
        }
@@ -33,9 +32,7 @@ index b10810d420..d666dc0124 100644
      }
    }
  
-+  // All screens of a stack share the navigation controller's toolbar, and a
-+  // screen without Stack.Toolbar has no host to hide it. So the host that
-+  // leaves hides it, unless the screen now on top has items of its own.
++  // The toolbar is shared by the stack, so the leaving host hides it for the next screen
 +  private func hideToolbarIfTopScreenHasNoItems() {
 +    guard let navigationController = cachedNavigationController,
 +      navigationController.topViewController?.toolbarItems?.isEmpty ?? true
