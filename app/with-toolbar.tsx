@@ -11,6 +11,7 @@ export default function WithToolbar() {
         <Stack.Toolbar.Button icon="star" onPress={() => {}} />
       </Stack.Toolbar>
       <Link href="/plain">Push C (no toolbar)</Link>
+      <Link href="/other-toolbar">Push D (toolbar)</Link>
     </Screen>
   );
 }

@@ -2,9 +2,8 @@ import type { ReactNode } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-// An empty toolbar draws nothing on iOS 26 and later, but it still adds its
-// height to the screen's bottom safe area. A provider inside the screen reads
-// the screen's own insets, not the window's.
+// A shown toolbar adds its height to the screen's bottom safe area. A provider
+// inside the screen reads the screen's own insets, not the window's.
 const ROWS = Array.from({ length: 30 }, (_, i) => i + 1);
 
 export function Screen(props: { note: string; children?: ReactNode }) {
